@@ -4,11 +4,11 @@ version = "0.1.0"
 description = ""
 authors = ["António Alvarenga <aalvarenga@imaginarycloud.com>"]
 readme = "README.md"
-packages = [{include = "app"}]
 
 [tool.poetry.dependencies]
 python = "^3.9"
 Flask = "^2.2.2"
+gunicorn = "^20.1.0"
 
 
 [build-system]

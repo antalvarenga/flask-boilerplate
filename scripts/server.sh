@@ -1,0 +1,1 @@
+poetry run flask run

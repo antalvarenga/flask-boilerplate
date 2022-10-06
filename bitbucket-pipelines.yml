@@ -21,19 +21,19 @@ pipelines:
     #       # Enforce style consistency across Python projects https://flake8.pycqa.org/en/latest/manpage.html
     #       - pip install flake8
     #       - flake8 . --extend-exclude=dist,build --show-source --statistics
-    - step:
-        name: Build & Push to Docker Hub
-        # trigger: manual  # Uncomment to make this a manual deployment.
-        script:
-          - docker build -t antalvarenga/poetry-flask .
-          - echo DOCKERHUB_USERNAME=${DOCKERHUB_USERNAME}
-          - echo DOCKERHUB_PASSWORD=${DOCKERHUB_PASSWORD}
-          - echo ${DOCKERHUB_PASSWORD} | docker login --username "$DOCKERHUB_USERNAME" --password-stdin
-          - docker push antalvarenga/poetry-flask:latest
-        services:
-          - docker
-        caches:
-          - docker
+    # - step:
+    #     name: Build & Push to Docker Hub
+    #     # trigger: manual  # Uncomment to make this a manual deployment.
+    #     script:
+    #       - docker build -t antalvarenga/poetry-flask .
+    #       - echo DOCKERHUB_USERNAME=${DOCKERHUB_USERNAME}
+    #       - echo DOCKERHUB_PASSWORD=${DOCKERHUB_PASSWORD}
+    #       - echo ${DOCKERHUB_PASSWORD} | docker login --username "$DOCKERHUB_USERNAME" --password-stdin
+    #       - docker push antalvarenga/poetry-flask:latest
+    #     services:
+    #       - docker
+    #     caches:
+    #       - docker
     # - step:
     #     name: Deploy to development
     #     deployment: test
@@ -49,8 +49,8 @@ pipelines:
         name: Deploy to development
         deployment: Test
         script:
-          - docker context create remote ‐‐docker "host=ssh://root@46.101.106.188"
-          - docker-compose ‐‐context remote up -d
+          - docker context create remote --docker "host=ssh://root@46.101.106.188"
+          - docker-compose --context remote up -d
         services:
           - docker
         caches:

@@ -23,7 +23,7 @@ pipelines:
     #       - flake8 . --extend-exclude=dist,build --show-source --statistics
     - step:
         name: Build & Push to Docker Hub
-        deployment: development
+        deployment: Test
         # trigger: manual  # Uncomment to make this a manual deployment.
         script:
           - docker build -t antalvarenga/poetry-flask .

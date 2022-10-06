@@ -33,15 +33,15 @@ pipelines:
           - docker
         caches:
           - docker
-    - step:
-        name: Deploy to development
-        deployment: test
-        # trigger: manual  # Uncomment to make this a manual deployment.
-        script:
+    # - step:
+    #     name: Deploy to development
+    #     deployment: test
+    #     # trigger: manual  # Uncomment to make this a manual deployment.
+    #     script:
           # - pipe: atlassian/scp-deploy:1.2.1
           #   variables:
           #     USER: 'root'
           #     SERVER: '46.101.106.188'
           #     REMOTE_PATH: '/'
           #     LOCAL_PATH: '${BITBUCKET_CLONE_DIR}/docker-compose.yml'
-          
+

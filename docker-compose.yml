@@ -2,9 +2,7 @@ version: "3.9"
 
 services:
   flask:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: antalvarenga/poetry-flask:latest
     expose:
       - 8000
     networks:

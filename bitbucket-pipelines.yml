@@ -3,33 +3,45 @@
 #  This template allows you to validate your python code.
 #  The workflow allows running tests and code linting on the default branch.
 
-image: python:3.8
+image: python:3.9.4-slim-buster
 
 pipelines:
   default:
-    - parallel:
-      - step:
-          name: Test
-          caches:
-            - pip
-          script:
-            - if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-            - pip install pytest
-            - pytest -v tests/* --junitxml=test-reports/report.xml
-      - step:
-          name: Lint code
-          script:
-            # Enforce style consistency across Python projects https://flake8.pycqa.org/en/latest/manpage.html
-            - pip install flake8
-            - flake8 . --extend-exclude=dist,build --show-source --statistics
-      - step:
-          name: Deploy to test
-          deployment: development
-          # trigger: manual  # Uncomment to make this a manual deployment.
-          script:
-            - pipe: atlassian/scp-deploy:1.2.1
-              variables:
-                USER: 'root'
-                SERVER: '46.101.106.188'
-                REMOTE_PATH: '/var/www/build/'
-                LOCAL_PATH: '${BITBUCKET_CLONE_DIR}/docker-compose.yml'
+    # - step:
+    #     name: Test
+    #     caches:
+    #       - pip
+    #     script:
+    #       - if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+    #       - pip install pytest
+    #       - pytest -v tests/* --junitxml=test-reports/report.xml
+    # - step:
+    #     name: Lint code
+    #     script:
+    #       # Enforce style consistency across Python projects https://flake8.pycqa.org/en/latest/manpage.html
+    #       - pip install flake8
+    #       - flake8 . --extend-exclude=dist,build --show-source --statistics
+    - step:
+        name: Build & Push to Docker Hub
+        deployment: development
+        # trigger: manual  # Uncomment to make this a manual deployment.
+        script:
+          - docker build -t antalvarenga/poetry-flask .
+          - echo ${DOCKERHUB_PASSWORD} | docker login --username "$DOCKERHUB_USERNAME" --password-stdin
+          - docker push antalvarenga/poetry-flask:latest
+        services:
+          - docker
+        caches:
+          - docker
+    - step:
+        name: Deploy to development
+        deployment: test
+        # trigger: manual  # Uncomment to make this a manual deployment.
+        script:
+          # - pipe: atlassian/scp-deploy:1.2.1
+          #   variables:
+          #     USER: 'root'
+          #     SERVER: '46.101.106.188'
+          #     REMOTE_PATH: '/'
+          #     LOCAL_PATH: '${BITBUCKET_CLONE_DIR}/docker-compose.yml'
+          

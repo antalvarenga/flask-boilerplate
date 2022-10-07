@@ -57,6 +57,7 @@ pipelines:
           - docker context create remote --docker "host=ssh://root@46.101.106.188"
           - docker context ls
           - docker context use remote
+          - sudo systemctl start docker
           - docker-compose --context remote -p flask-app up -d --remove-orphans
         services:
           - docker

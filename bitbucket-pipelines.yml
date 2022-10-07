@@ -21,21 +21,21 @@ pipelines:
     #       # Enforce style consistency across Python projects https://flake8.pycqa.org/en/latest/manpage.html
     #       - pip install flake8
     #       - flake8 . --extend-exclude=dist,build --show-source --statistics
-    # - step:
-    #     name: Build & Push to Docker Hub
-    #     # trigger: manual  # Uncomment to make this a manual deployment.
-    #     script:
-    #       - docker build -t antalvarenga/poetry-flask .
-            # - docker build -f nginx.Dockerfile -t antalvarenga/nginx .
-    #       - echo DOCKERHUB_USERNAME=${DOCKERHUB_USERNAME}
-    #       - echo DOCKERHUB_PASSWORD=${DOCKERHUB_PASSWORD}
-    #       - echo ${DOCKERHUB_PASSWORD} | docker login --username "$DOCKERHUB_USERNAME" --password-stdin
-    #       - docker push antalvarenga/poetry-flask:latest
-    #       - docker push antalvarenga/nginx:latest
-    #     services:
-    #       - docker
-    #     caches:
-    #       - docker
+    - step:
+        name: Build & Push to Docker Hub
+        # trigger: manual  # Uncomment to make this a manual deployment.
+        script:
+          - docker build -t antalvarenga/poetry-flask .
+          - docker build -f nginx.Dockerfile -t antalvarenga/nginx .
+          - echo DOCKERHUB_USERNAME=${DOCKERHUB_USERNAME}
+          - echo DOCKERHUB_PASSWORD=${DOCKERHUB_PASSWORD}
+          - echo ${DOCKERHUB_PASSWORD} | docker login --username "$DOCKERHUB_USERNAME" --password-stdin
+          - docker push antalvarenga/poetry-flask:latest
+          - docker push antalvarenga/nginx:latest
+        services:
+          - docker
+        caches:
+          - docker
     - step:
         name: Copy docker-compose file to remote
         # trigger: manual  # Uncomment to make this a manual deployment.
@@ -55,7 +55,7 @@ pipelines:
             variables:
               SSH_USER: 'root'
               SERVER: '46.101.106.188'
-              COMMAND: 'docker compose -p flask-app up -d --remove-orphans'
+              COMMAND: 'docker compose -p flask-app up --force-recreate --pull always -d'
     # - step:
     #     name: Deploy to development
     #     deployment: Test

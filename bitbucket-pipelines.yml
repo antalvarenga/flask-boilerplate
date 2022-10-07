@@ -51,6 +51,7 @@ pipelines:
         name: Deploy to development
         deployment: Test
         script:
+          - unset DOCKER_HOST
           - docker -v
           - pip install --no-cache-dir docker-compose
           - docker-compose -v

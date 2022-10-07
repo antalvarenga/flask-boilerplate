@@ -11,4 +11,8 @@ RUN apt-get install -y curl docker.io
 
 RUN curl -L https://raw.githubusercontent.com/docker/compose-cli/main/scripts/install/install_linux.sh | sh
 
+WORKDIR /app
+
+COPY . /app
+
 CMD ["python3"]

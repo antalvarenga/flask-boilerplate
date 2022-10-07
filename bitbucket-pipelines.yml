@@ -26,10 +26,12 @@ pipelines:
     #     # trigger: manual  # Uncomment to make this a manual deployment.
     #     script:
     #       - docker build -t antalvarenga/poetry-flask .
+            # - docker build -f nginx.Dockerfile -t antalvarenga/nginx .
     #       - echo DOCKERHUB_USERNAME=${DOCKERHUB_USERNAME}
     #       - echo DOCKERHUB_PASSWORD=${DOCKERHUB_PASSWORD}
     #       - echo ${DOCKERHUB_PASSWORD} | docker login --username "$DOCKERHUB_USERNAME" --password-stdin
     #       - docker push antalvarenga/poetry-flask:latest
+    #       - docker push antalvarenga/nginx:latest
     #     services:
     #       - docker
     #     caches:
@@ -50,8 +52,9 @@ pipelines:
         deployment: Test
         script:
           - docker -v
+          - docker compose --help
           - docker context create remote --docker "host=ssh://root@46.101.106.188"
-          - docker compose --context remote up -d
+          - docker --context remote compose up -d
         services:
           - docker
         caches:

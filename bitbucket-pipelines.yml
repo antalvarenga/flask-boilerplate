@@ -55,7 +55,7 @@ pipelines:
             variables:
               SSH_USER: 'root'
               SERVER: '46.101.106.188'
-              COMMAND: 'docker compose -p flask-app up --force-recreate --pull always -d'
+              COMMAND: 'docker compose pull && docker compose -p flask-app up --force-recreate -d'
     # - step:
     #     name: Deploy to development
     #     deployment: Test

@@ -25,11 +25,11 @@ pipelines:
         name: Build & push app
         # trigger: manual  # Uncomment to make this a manual deployment.
         script:
-          # - docker build -t antalvarenga/poetry-flask .
+          - docker build -t antalvarenga/poetry-flask .
           - echo DOCKERHUB_USERNAME=${DOCKERHUB_USERNAME}
-          # - echo DOCKERHUB_PASSWORD=${DOCKERHUB_PASSWORD}
-          # - echo ${DOCKERHUB_PASSWORD} | docker login --username "$DOCKERHUB_USERNAME" --password-stdin
-          # - docker push antalvarenga/poetry-flask:latest
+          - echo DOCKERHUB_PASSWORD=${DOCKERHUB_PASSWORD}
+          - echo ${DOCKERHUB_PASSWORD} | docker login --username "$DOCKERHUB_USERNAME" --password-stdin
+          - docker push antalvarenga/poetry-flask:latest
         services:
           - docker
         caches:
@@ -45,12 +45,11 @@ pipelines:
     - step:
         name: Build & push nginx
         script:
-          # - docker build -f nginx.Dockerfile -t antalvarenga/nginx .
-          # - echo DOCKERHUB_USERNAME=${DOCKERHUB_USERNAME}
-          # - echo DOCKERHUB_PASSWORD=${DOCKERHUB_PASSWORD}
-          # - echo ${DOCKERHUB_PASSWORD} | docker login --username "$DOCKERHUB_USERNAME" --password-stdin
-          # - docker push antalvarenga/nginx:latest
-          - echo RAN
+          - docker build -f nginx.Dockerfile -t antalvarenga/nginx .
+          - echo DOCKERHUB_USERNAME=${DOCKERHUB_USERNAME}
+          - echo DOCKERHUB_PASSWORD=${DOCKERHUB_PASSWORD}
+          - echo ${DOCKERHUB_PASSWORD} | docker login --username "$DOCKERHUB_USERNAME" --password-stdin
+          - docker push antalvarenga/nginx:latest
         services:
           - docker
         caches:

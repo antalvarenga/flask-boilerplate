@@ -10,4 +10,4 @@ app.wsgi_app = ProxyFix(
 
 @app.route("/")
 def hello_world():
-    return "<p>Hello</p>"
+    return "<p>Hello WORLD</p>"

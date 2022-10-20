@@ -14,8 +14,15 @@ services:
       - 443:443
     networks:
       - internal
+    volumes:
+      - ./certbot/www:/var/www/certbot/:ro
+    restart: always
     depends_on:
       - flask
+  certbot:
+    image: certbot/certbot:latest
+    volumes:
+      - ./certbot/www/:/var/www/certbot/:rw
 
 
 networks:

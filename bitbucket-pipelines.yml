@@ -6,104 +6,108 @@
 image: atlassian/default-image:3
 
 pipelines:
-  default:
-    # - step:
-    #     name: Test
-    #     caches:
-    #       - pip
-    #     script:
-    #       - if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-    #       - pip install pytest
-    #       - pytest -v tests/* --junitxml=test-reports/report.xml
-    # - step:
-    #     name: Lint code
-    #     script:
-    #       # Enforce style consistency across Python projects https://flake8.pycqa.org/en/latest/manpage.html
-    #       - pip install flake8
-    #       - flake8 . --extend-exclude=dist,build --show-source --statistics
-    - step:
-        name: Build & push app
-        # trigger: manual  # Uncomment to make this a manual deployment.
-        script:
-          - docker build -t antalvarenga/poetry-flask .
-          - echo DOCKERHUB_USERNAME=${DOCKERHUB_USERNAME}
-          - echo DOCKERHUB_PASSWORD=${DOCKERHUB_PASSWORD}
-          - echo ${DOCKERHUB_PASSWORD} | docker login --username "$DOCKERHUB_USERNAME" --password-stdin
-          - docker push antalvarenga/poetry-flask:latest
-        services:
-          - docker
-        caches:
-          - docker
-        condition:
-          changesets:
-            includePaths:
-              - "app/**"
-              - "poetry.lock"
-              - "pyproject.toml"
-              - "Dockerfile"
-              - "bitbucket-pipelines.yml"
-    - step:
-        name: Build & push nginx
-        script:
-          - docker build -f nginx.Dockerfile -t antalvarenga/nginx .
-          - echo DOCKERHUB_USERNAME=${DOCKERHUB_USERNAME}
-          - echo DOCKERHUB_PASSWORD=${DOCKERHUB_PASSWORD}
-          - echo ${DOCKERHUB_PASSWORD} | docker login --username "$DOCKERHUB_USERNAME" --password-stdin
-          - docker push antalvarenga/nginx:latest
-        services:
-          - docker
-        caches:
-          - docker
-        condition:
-          changesets:
-            includePaths:
-              - "nginx.Dockerfile"
-              - "config/nginx_default.conf"
-              - "bitbucket-pipelines.yml"
-    - step:
-        name: Copy docker-compose file to remote
-        # trigger: manual  # Uncomment to make this a manual deployment.
-        script:
-          - pipe: atlassian/scp-deploy:1.2.1
-            variables:
-              USER: 'root'
-              SERVER: '46.101.106.188'
-              REMOTE_PATH: '/'
-              LOCAL_PATH: '${BITBUCKET_CLONE_DIR}/docker-compose.yml'
-        condition:
-          changesets:
-            includePaths:
-              - "docker-compose.yml"
-              - "bitbucket-pipelines.yml"
-    
-    - step:
-        name: Deploy to development
-        deployment: Test
-        script:
-          - pipe: atlassian/ssh-run:0.4.1
-            variables:
-              SSH_USER: 'root'
-              SERVER: '46.101.106.188'
-              COMMAND: 'docker compose pull && docker compose -p flask-app up --force-recreate -d && docker image prune -f'
-        condition:
-          changesets:
-            includePaths:
-              - "app/**"
-              - "poetry.lock"
-              - "pyproject.toml"
-              - "Dockerfile"
-              - "docker-compose.yml"
-              - "nginx.Dockerfile"
-              - "config/nginx_default.conf"
-              - "bitbucket-pipelines.yml"
-    # - step:
-    #     name: Deploy to development
-    #     deployment: Test
-    #     script:
-    #       - unset DOCKER_HOST
-    #       - docker -v
-    #       - docker compose --help
-    #       - docker context create remote --docker "host=ssh://root@46.101.106.188"
-    #       - docker context ls
-    #       - docker context use remote
-    #       - docker --context remote -p flask-app compose up -d --remove-orphans
+  pull-requests:
+    '**':
+      - step:
+          name: Test
+          caches:
+            - pip
+          script:
+      #       - if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+      #       - pip install pytest
+      #       - pytest -v tests/* --junitxml=test-reports/report.xml
+            - echo "Testing..."
+      # - step:
+      #     name: Lint code
+      #     script:
+      #       # Enforce style consistency across Python projects https://flake8.pycqa.org/en/latest/manpage.html
+      #       - pip install flake8
+      #       - flake8 . --extend-exclude=dist,build --show-source --statistics
+  branches:
+    master:
+      - step:
+          name: Build & push app
+          # trigger: manual  # Uncomment to make this a manual deployment.
+          script:
+            - docker build -t antalvarenga/poetry-flask .
+            - echo DOCKERHUB_USERNAME=${DOCKERHUB_USERNAME}
+            - echo DOCKERHUB_PASSWORD=${DOCKERHUB_PASSWORD}
+            - echo ${DOCKERHUB_PASSWORD} | docker login --username "$DOCKERHUB_USERNAME" --password-stdin
+            - docker push antalvarenga/poetry-flask:latest
+          services:
+            - docker
+          caches:
+            - docker
+          condition:
+            changesets:
+              includePaths:
+                - "app/**"
+                - "poetry.lock"
+                - "pyproject.toml"
+                - "Dockerfile"
+                - "bitbucket-pipelines.yml"
+      - step:
+          name: Build & push nginx
+          script:
+            - docker build -f nginx.Dockerfile -t antalvarenga/nginx .
+            - echo DOCKERHUB_USERNAME=${DOCKERHUB_USERNAME}
+            - echo DOCKERHUB_PASSWORD=${DOCKERHUB_PASSWORD}
+            - echo ${DOCKERHUB_PASSWORD} | docker login --username "$DOCKERHUB_USERNAME" --password-stdin
+            - docker push antalvarenga/nginx:latest
+          services:
+            - docker
+          caches:
+            - docker
+          condition:
+            changesets:
+              includePaths:
+                - "nginx.Dockerfile"
+                - "nginx/nginx_default.conf"
+                - "bitbucket-pipelines.yml"
+      - step:
+          name: Copy docker-compose file to remote
+          # trigger: manual  # Uncomment to make this a manual deployment.
+          script:
+            - pipe: atlassian/scp-deploy:1.2.1
+              variables:
+                USER: 'root'
+                SERVER: '46.101.106.188'
+                REMOTE_PATH: '/'
+                LOCAL_PATH: '${BITBUCKET_CLONE_DIR}/docker-compose.yml'
+          condition:
+            changesets:
+              includePaths:
+                - "docker-compose.yml"
+                - "bitbucket-pipelines.yml"
+      
+      - step:
+          name: Deploy to development
+          deployment: Test
+          script:
+            - pipe: atlassian/ssh-run:0.4.1
+              variables:
+                SSH_USER: 'root'
+                SERVER: '46.101.106.188'
+                COMMAND: 'docker compose pull && docker compose -p flask-app up --force-recreate -d && docker image prune -f'
+          condition:
+            changesets:
+              includePaths:
+                - "app/**"
+                - "poetry.lock"
+                - "pyproject.toml"
+                - "Dockerfile"
+                - "docker-compose.yml"
+                - "nginx.Dockerfile"
+                - "config/nginx_default.conf"
+                - "bitbucket-pipelines.yml"
+      # - step:
+      #     name: Deploy to development
+      #     deployment: Test
+      #     script:
+      #       - unset DOCKER_HOST
+      #       - docker -v
+      #       - docker compose --help
+      #       - docker context create remote --docker "host=ssh://root@46.101.106.188"
+      #       - docker context ls
+      #       - docker context use remote
+      #       - docker --context remote -p flask-app compose up -d --remove-orphans

@@ -1,21 +1,25 @@
-from typing import Final, Generic, Optional, TypeVar, cast
-# from flask_sqlalchemy import BaseQuery, Model
+from typing import Final, Generic, Optional, Type, TypeVar
 from app.stores.database import db
+from app.types.models import ModelInstance
 
-M = TypeVar("M", bound=db.Model)
+class Base(Generic[ModelInstance]):
+    _model: Type[ModelInstance]
 
-class Base(Generic[M]):
-    _model = M
+    def get_by_id(self, id) -> Optional[ModelInstance]:
+        record = db.session.get(self._model, id)
+        
+        return record
 
-    def get_by_id(self, id) -> str:
-        # query = self._query()
-        return "laskdn"
+    def create(self, **data) -> Optional[ModelInstance]:
+        try:
+            record: Final = self._model(**data)
+            db.session.add(record)
+            db.session.commit()
 
-    def create(self, **data):
-        record: Final = self._model(**data)
-        db.session.add(record)
-        db.session.commit()
+            return record
+        except:
+            db.session.rollback()
+            raise
+
 
     
-    # def _query(self):
-    #     return cast(BaseQuery, self._model.query)

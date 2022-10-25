@@ -3,5 +3,5 @@ from app.services.base import Base
 
 
 class UserService(Base[User]):
-    def get_by_id(self, id):
-        return {"name": "admin"}
+    def __init__(self):
+        self._model = User

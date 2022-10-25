@@ -13,6 +13,8 @@ def create_app(config_file: str = None, env="local"):
         )
     if env == 'local':
         app.config.from_object("config.LocalConfig")
+    if env == 'testing':
+        app.config.from_object("config.TestingConfig")
 
     docs: FlaskApiSpec = FlaskApiSpec()
 

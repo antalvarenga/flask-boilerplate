@@ -1,12 +1,14 @@
 # Fixtures in conftest.py will be available to every test inside the same folder
 
 from typing import Final
-from flask import Flask
+
 import pytest
+from flask import Flask
+
 from app import create_app
 
-
 pytest_plugins = ["tests.fixtures"]
+
 
 @pytest.fixture()
 def app():

@@ -79,7 +79,7 @@ pipelines:
               includePaths:
                 - "docker-compose.yml"
                 - "bitbucket-pipelines.yml"
-      
+
       - step:
           name: Deploy to development
           deployment: Test

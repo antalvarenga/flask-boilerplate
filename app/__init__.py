@@ -1,19 +1,19 @@
 from flask import Flask
 from flask_apispec import FlaskApiSpec
 from werkzeug.middleware.proxy_fix import ProxyFix
+
 from app.admin import v1 as admin_v1
 from config import database
 
+
 def create_app(config_file: str = None, env="local"):
     app = Flask(__name__)
-    
-    if env == 'prod':
-        app.wsgi_app = ProxyFix(
-            app.wsgi_app, x_for=1, x_proto=1, x_host=1, x_prefix=1
-        )
-    if env == 'local':
+
+    if env == "prod":
+        app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1, x_host=1, x_prefix=1)
+    if env == "local":
         app.config.from_object("config.LocalConfig")
-    if env == 'testing':
+    if env == "testing":
         app.config.from_object("config.TestingConfig")
 
     docs: FlaskApiSpec = FlaskApiSpec()

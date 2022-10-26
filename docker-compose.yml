@@ -24,7 +24,7 @@ services:
   database:
     image: bitnami/postgresql:13-debian-11
     restart: unless-stopped
-    ports: 
+    ports:
       - 5432:5432
     volumes:
       - database_vol:/bitnami/postgresql

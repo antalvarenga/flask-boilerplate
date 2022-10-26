@@ -1,8 +1,9 @@
-from flask_sqlalchemy import SQLAlchemy
 import pytest
 from flask import Flask
 from flask_migrate import upgrade
+from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import scoped_session
+
 from app.stores.database import db
 
 

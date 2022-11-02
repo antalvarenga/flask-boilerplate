@@ -25,14 +25,13 @@ pipelines:
             name: Test
             script:
               - cat success.txt
-              - poetry install
               - poetry run pytest -v --cov
             services:
               - postgres
         - step:
             name: Lint
             script:
-              - poetry install
+              - poetry run pre-commit install
               - poetry run pre-commit run --all-files
   # branches:
   #   master:

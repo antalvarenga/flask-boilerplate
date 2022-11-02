@@ -30,20 +30,3 @@ RUN apt-get update \
 
 # install poetry - respects $POETRY_VERSION & $POETRY_HOME
 RUN curl -sSL https://install.python-poetry.org | python -
-
-# copy project requirement files here to ensure they will be cached.
-WORKDIR $PYSETUP_PATH
-COPY poetry.lock pyproject.toml ./
-
-# install runtime deps - uses $POETRY_VIRTUALENVS_IN_PROJECT internally
-RUN poetry install --no-dev
-
-# ###############################################
-# # Production Image
-# ###############################################
-# FROM python-base as production
-# COPY --from=builder-base $PYSETUP_PATH $PYSETUP_PATH
-COPY ./app ./app
-
-# CMD [ "poetry", "run" , "gunicorn", "-w", "4", "--bind", "0.0.0.0:5000", "\'app:create_app(env=\"prod\")\'"]
-CMD poetry run gunicorn -w 4 'app:create_app(env="prod")'

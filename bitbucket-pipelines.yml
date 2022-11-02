@@ -16,6 +16,8 @@ pipelines:
             - echo "Testing..."
             - poetry install
             - poetry run pytest -v --cov
+          services:
+            - postgres
       # - step:
       #     name: Lint code
       #     script:
@@ -110,3 +112,13 @@ pipelines:
       #       - docker context ls
       #       - docker context use remote
       #       - docker --context remote -p flask-app compose up -d --remove-orphans
+
+definitions:
+  services:
+    postgres:
+      image: bitnami/postgresql:13-debian-11
+      variables:
+        POSTGRESQL_DATABASE: 'flask_app_test'
+        POSTGRESQL_USERNAME: 'flask_app_root'
+        POSTGRES_PASSWORD: '123456'
+        POSTGRESQL_POSTGRES_PASSWORD: '123456'

@@ -12,6 +12,7 @@ pipelines:
     development:
       - step:
           name: Test
+          caches: venv
           script:
             - echo "Testing..."
             - poetry install
@@ -122,3 +123,5 @@ definitions:
         POSTGRESQL_USERNAME: 'flask_app_root'
         POSTGRES_PASSWORD: '123456'
         POSTGRESQL_POSTGRES_PASSWORD: '123456'
+  caches:
+    venv: .venv

@@ -31,8 +31,11 @@ pipelines:
         - step:
             name: Lint
             script:
-              - poetry run pre-commit install
+              - poetry run pre-commit install --install-hooks
               - poetry run pre-commit run --all-files
+            after-script:
+              - cat /root/.cache/pre-commit/pre-commit.log
+
   # branches:
   #   master:
   #     - step:

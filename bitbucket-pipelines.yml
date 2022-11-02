@@ -22,7 +22,6 @@ pipelines:
         - step:
             name: Test
             script:
-              - cat success.txt
               - poetry run pytest -v --cov
             services:
               - postgres
@@ -31,7 +30,6 @@ pipelines:
             caches:
               - pre-commit
             script:
-              - git status
               - poetry run pre-commit install --install-hooks
               - poetry run pre-commit run --all-files
             after-script:

@@ -12,14 +12,15 @@ pipelines:
     development:
       - step:
           name: Install dependencies
-          caches: venv
+          caches:
+            - venv
           artifacts:
             - .venv/**
             - success.txt
           script:
             - poetry install
             - echo "artifact" > success.txt
-      parallel:
+      - parallel:
         - step:
             name: Test
             script:
@@ -30,7 +31,6 @@ pipelines:
               - postgres
         - step:
             name: Lint
-            caches: venv
             script:
               - poetry install
               - poetry run pre-commit run --all-files

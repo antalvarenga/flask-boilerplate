@@ -11,20 +11,29 @@ pipelines:
   branches:
     development:
       - step:
-          name: Test
+          name: Install dependencies
           caches: venv
+          artifacts:
+            - .venv/**
+            - success.txt
           script:
-            - echo "Testing..."
             - poetry install
-            - poetry run pytest -v --cov
-          services:
-            - postgres
-      # - step:
-      #     name: Lint code
-      #     script:
-      #       # Enforce style consistency across Python projects https://flake8.pycqa.org/en/latest/manpage.html
-      #       - pip install flake8
-      #       - flake8 . --extend-exclude=dist,build --show-source --statistics
+            - echo "artifact" > success.txt
+      parallel:
+        - step:
+            name: Test
+            script:
+              - cat success.txt
+              - poetry install
+              - poetry run pytest -v --cov
+            services:
+              - postgres
+        - step:
+            name: Lint
+            caches: venv
+            script:
+              - poetry install
+              - poetry run pre-commit run --all-files
   # branches:
   #   master:
   #     - step:

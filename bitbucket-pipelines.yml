@@ -6,8 +6,10 @@
 image: antalvarenga/python-poetry:latest
 
 pipelines:
-  pull-requests:
-    '**':
+  # pull-requests:
+  #   '**':
+  branches:
+    development:
       - step:
           name: Test
           script:

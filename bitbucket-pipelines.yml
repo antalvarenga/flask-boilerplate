@@ -16,10 +16,8 @@ pipelines:
             - venv
           artifacts:
             - .venv/**
-            - success.txt
           script:
             - poetry install
-            - echo "artifact" > success.txt
       - parallel:
         - step:
             name: Test
@@ -30,6 +28,8 @@ pipelines:
               - postgres
         - step:
             name: Lint
+            caches:
+              - pre-commit
             script:
               - git status
               - poetry run pre-commit install --install-hooks
@@ -137,3 +137,4 @@ definitions:
         POSTGRESQL_POSTGRES_PASSWORD: '123456'
   caches:
     venv: .venv
+    pre-commit: $HOME/.cache/pre-commit

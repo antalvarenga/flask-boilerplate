@@ -3,7 +3,7 @@
 #  This template allows you to validate your python code.
 #  The workflow allows running tests and code linting on the default branch.
 
-image: antalvarenga/python-poetry
+image: antalvarenga/python-poetry:latest
 
 pipelines:
   pull-requests:

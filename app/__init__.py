@@ -11,6 +11,7 @@ def create_app(config_file: str = None, env="local"):
 
     if env == "prod":
         app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1, x_host=1, x_prefix=1)
+        app.config.from_object("config.ProductionConfig")
     if env == "local":
         app.config.from_object("config.LocalConfig")
     if env == "testing":

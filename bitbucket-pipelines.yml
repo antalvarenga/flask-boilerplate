@@ -6,10 +6,8 @@
 image: antalvarenga/python-poetry:latest
 
 pipelines:
-  # pull-requests:
-  #   '**':
-  branches:
-    development:
+  pull-requests:
+    '**':
       - step:
           name: Install dependencies
           caches:
@@ -32,86 +30,84 @@ pipelines:
             script:
               - poetry run pre-commit install --install-hooks
               - poetry run pre-commit run --all-files
-            after-script:
-              - cat /root/.cache/pre-commit/pre-commit.log
 
-  # branches:
-  #   master:
-  #     - step:
-  #         name: Build & push app
-  #         # trigger: manual  # Uncomment to make this a manual deployment.
-  #         script:
-  #           - docker build -t antalvarenga/poetry-flask .
-  #           - echo DOCKERHUB_USERNAME=${DOCKERHUB_USERNAME}
-  #           - echo DOCKERHUB_PASSWORD=${DOCKERHUB_PASSWORD}
-  #           - echo ${DOCKERHUB_PASSWORD} | docker login --username "$DOCKERHUB_USERNAME" --password-stdin
-  #           - docker push antalvarenga/poetry-flask:latest
-  #         services:
-  #           - docker
-  #         caches:
-  #           - docker
-  #         condition:
-  #           changesets:
-  #             includePaths:
-  #               - "app/**"
-  #               - "poetry.lock"
-  #               - "pyproject.toml"
-  #               - "Dockerfile"
-  #               - "bitbucket-pipelines.yml"
-  #     - step:
-  #         name: Build & push nginx
-  #         script:
-  #           - docker build -f nginx.Dockerfile -t antalvarenga/nginx .
-  #           - echo DOCKERHUB_USERNAME=${DOCKERHUB_USERNAME}
-  #           - echo DOCKERHUB_PASSWORD=${DOCKERHUB_PASSWORD}
-  #           - echo ${DOCKERHUB_PASSWORD} | docker login --username "$DOCKERHUB_USERNAME" --password-stdin
-  #           - docker push antalvarenga/nginx:latest
-  #         services:
-  #           - docker
-  #         caches:
-  #           - docker
-  #         condition:
-  #           changesets:
-  #             includePaths:
-  #               - "nginx.Dockerfile"
-  #               - "nginx/nginx_default.conf"
-  #               - "bitbucket-pipelines.yml"
-  #     - step:
-  #         name: Copy docker-compose file to remote
-  #         # trigger: manual  # Uncomment to make this a manual deployment.
-  #         script:
-  #           - pipe: atlassian/scp-deploy:1.2.1
-  #             variables:
-  #               USER: 'root'
-  #               SERVER: '46.101.106.188'
-  #               REMOTE_PATH: '/'
-  #               LOCAL_PATH: '${BITBUCKET_CLONE_DIR}/docker-compose.yml'
-  #         condition:
-  #           changesets:
-  #             includePaths:
-  #               - "docker-compose.yml"
-  #               - "bitbucket-pipelines.yml"
+  branches:
+    master:
+      - step:
+          name: Build & push app
+          # trigger: manual  # Uncomment to make this a manual deployment.
+          script:
+            - docker build -t antalvarenga/poetry-flask .
+            - echo DOCKERHUB_USERNAME=${DOCKERHUB_USERNAME}
+            - echo DOCKERHUB_PASSWORD=${DOCKERHUB_PASSWORD}
+            - echo ${DOCKERHUB_PASSWORD} | docker login --username "$DOCKERHUB_USERNAME" --password-stdin
+            - docker push antalvarenga/poetry-flask:latest
+          services:
+            - docker
+          caches:
+            - docker
+          condition:
+            changesets:
+              includePaths:
+                - "app/**"
+                - "poetry.lock"
+                - "pyproject.toml"
+                - "Dockerfile"
+                - "bitbucket-pipelines.yml"
+      - step:
+          name: Build & push nginx
+          script:
+            - docker build -f nginx.Dockerfile -t antalvarenga/nginx .
+            - echo DOCKERHUB_USERNAME=${DOCKERHUB_USERNAME}
+            - echo DOCKERHUB_PASSWORD=${DOCKERHUB_PASSWORD}
+            - echo ${DOCKERHUB_PASSWORD} | docker login --username "$DOCKERHUB_USERNAME" --password-stdin
+            - docker push antalvarenga/nginx:latest
+          services:
+            - docker
+          caches:
+            - docker
+          condition:
+            changesets:
+              includePaths:
+                - "nginx.Dockerfile"
+                - "nginx/nginx_default.conf"
+                - "bitbucket-pipelines.yml"
+      - step:
+          name: Copy docker-compose file to remote
+          # trigger: manual  # Uncomment to make this a manual deployment.
+          script:
+            - pipe: atlassian/scp-deploy:1.2.1
+              variables:
+                USER: 'root'
+                SERVER: '46.101.106.188'
+                REMOTE_PATH: '/'
+                LOCAL_PATH: '${BITBUCKET_CLONE_DIR}/docker-compose.yml'
+          condition:
+            changesets:
+              includePaths:
+                - "docker-compose.yml"
+                - "bitbucket-pipelines.yml"
 
-  #     - step:
-  #         name: Deploy to development
-  #         deployment: Test
-  #         script:
-  #           - pipe: atlassian/ssh-run:0.4.1
-  #             variables:
-  #               SSH_USER: 'root'
-  #               SERVER: '46.101.106.188'
-  #               COMMAND: 'docker compose pull && docker compose -p flask-app up --force-recreate -d && docker image prune -f'
-  #         condition:
-  #           changesets:
-  #             includePaths:
-  #               - "app/**"
-  #               - "poetry.lock"
-  #               - "pyproject.toml"
-  #               - "Dockerfile"
-  #               - "docker-compose.yml"
-  #               - "nginx.Dockerfile"
-  #               - "config/nginx_default.conf"
-  #               - "bitbucket-pipelines.yml"
+      - step:
+          name: Deploy to development
+          deployment: Test
+          script:
+            - pipe: atlassian/ssh-run:0.4.1
+              variables:
+                SSH_USER: 'root'
+                SERVER: '46.101.106.188'
+                COMMAND: 'docker compose pull && docker compose -p flask-app up --force-recreate -d && docker image prune -f'
+          condition:
+            changesets:
+              includePaths:
+                - "app/**"
+                - "poetry.lock"
+                - "pyproject.toml"
+                - "Dockerfile"
+                - "docker-compose.yml"
+                - "nginx.Dockerfile"
+                - "config/nginx_default.conf"
+                - "bitbucket-pipelines.yml"
       # - step:
       #     name: Deploy to development
       #     deployment: Test

@@ -44,6 +44,8 @@ RUN poetry install --no-dev
 # FROM python-base as production
 # COPY --from=builder-base $PYSETUP_PATH $PYSETUP_PATH
 COPY ./app ./app
+COPY ./migrations ./migrations
+COPY ./config ./config
 
 # CMD [ "poetry", "run" , "gunicorn", "-w", "4", "--bind", "0.0.0.0:5000", "\'app:create_app(env=\"prod\")\'"]
 CMD poetry run gunicorn -w 4 --bind 0.0.0.0:5000 'app:create_app(env="prod")'

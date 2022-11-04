@@ -90,24 +90,25 @@ pipelines:
 
       - step:
           name: Deploy to development
-          deployment: Test
+          deployment: test
           script:
             - pipe: atlassian/ssh-run:0.4.1
               variables:
                 SSH_USER: 'root'
                 SERVER: '46.101.106.188'
                 COMMAND: 'docker compose pull && docker compose -p flask-app up --force-recreate -d && docker image prune -f'
+      - step:
+          name: Run migrations
+          script:
+            - pipe: atlassian/ssh-run:0.4.1
+              variables:
+                SSH_USER: 'root'
+                SERVER: '46.101.106.188'
+                COMMAND: 'docker compose -p flask-app run flask poetry run flask db upgrade'
           condition:
             changesets:
               includePaths:
-                - "app/**"
-                - "poetry.lock"
-                - "pyproject.toml"
-                - "Dockerfile"
-                - "docker-compose.yml"
-                - "nginx.Dockerfile"
-                - "config/nginx_default.conf"
-                - "bitbucket-pipelines.yml"
+                - "migrations/versions/**"
       # - step:
       #     name: Deploy to development
       #     deployment: Test

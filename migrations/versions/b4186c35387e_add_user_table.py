@@ -3,7 +3,7 @@
 Revision ID: b4186c35387e
 Revises:
 Create Date: 2022-10-24 15:49:50.048140
-
+trigger
 """
 import sqlalchemy as sa
 from alembic import op

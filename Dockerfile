@@ -46,4 +46,4 @@ RUN poetry install --no-dev
 COPY ./app ./app
 
 # CMD [ "poetry", "run" , "gunicorn", "-w", "4", "--bind", "0.0.0.0:5000", "\'app:create_app(env=\"prod\")\'"]
-CMD poetry run gunicorn -w 4 'app:create_app(env="prod")'
+CMD poetry run gunicorn -w 4 --bind 0.0.0.0:5000 'app:create_app(env="prod")'

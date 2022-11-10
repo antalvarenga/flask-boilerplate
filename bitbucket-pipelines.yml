@@ -104,7 +104,7 @@ pipelines:
               variables:
                 SSH_USER: 'root'
                 SERVER: '46.101.106.188'
-                COMMAND: 'docker compose -p flask-app run flask poetry run flask db upgrade'
+                COMMAND: 'docker compose -p flask-app run --rm flask poetry run flask db upgrade'
           condition:
             changesets:
               includePaths:

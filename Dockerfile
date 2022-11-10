@@ -48,4 +48,6 @@ COPY ./migrations ./migrations
 COPY ./config ./config
 
 # CMD [ "poetry", "run" , "gunicorn", "-w", "4", "--bind", "0.0.0.0:5000", "\'app:create_app(env=\"prod\")\'"]
+
+ENV FLASK_APP="app:create_app(env='prod')"
 CMD poetry run gunicorn -w 4 --bind 0.0.0.0:5000 'app:create_app(env="prod")'

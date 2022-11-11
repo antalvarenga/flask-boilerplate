@@ -35,7 +35,7 @@ pipelines:
     master:
       - step:
           name: Build & push app
-          # trigger: manual  # Uncomment to make this a manual deployment.
+          trigger: manual
           script:
             - docker build -t antalvarenga/poetry-flask .
             - echo DOCKERHUB_USERNAME=${DOCKERHUB_USERNAME}
@@ -56,6 +56,7 @@ pipelines:
                 - "bitbucket-pipelines.yml"
       - step:
           name: Build & push nginx
+          trigger: manual
           script:
             - docker build -f nginx.Dockerfile -t antalvarenga/nginx .
             - echo DOCKERHUB_USERNAME=${DOCKERHUB_USERNAME}
@@ -74,7 +75,7 @@ pipelines:
                 - "bitbucket-pipelines.yml"
       - step:
           name: Copy docker-compose file to remote
-          # trigger: manual  # Uncomment to make this a manual deployment.
+          trigger: manual
           script:
             - pipe: atlassian/scp-deploy:1.2.1
               variables:
@@ -90,6 +91,7 @@ pipelines:
 
       - step:
           name: Deploy to development
+          trigger: manual
           deployment: test
           script:
             - pipe: atlassian/ssh-run:0.4.1

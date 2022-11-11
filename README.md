@@ -8,13 +8,13 @@ Boilerplate using Python's Flask web framework (https://flask.palletsprojects.co
 - Flask Blueprints for different application contexts;
 - Poetry dependency manager;
 - Pre-commit hooks:
-  - end-of-file-fixer;
-  - trailing-whitespace;
-  - black;
-  - autoflake;
-  - flake8;
-  - isort;
-  - mypy.
+    - end-of-file-fixer;
+    - trailing-whitespace;
+    - black;
+    - autoflake;
+    - flake8;
+    - isort;
+    - mypy.
 - OpenAPI documentation (AKA Swagger);
 - Testing with pytest;
 - PostgreSQL Database connection with Flask-SQLAlchemy;

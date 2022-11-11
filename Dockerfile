@@ -38,11 +38,6 @@ COPY poetry.lock pyproject.toml ./
 # install runtime deps - uses $POETRY_VIRTUALENVS_IN_PROJECT internally
 RUN poetry install --no-dev
 
-# ###############################################
-# # Production Image
-# ###############################################
-# FROM python-base as production
-# COPY --from=builder-base $PYSETUP_PATH $PYSETUP_PATH
 COPY ./app ./app
 COPY ./migrations ./migrations
 COPY ./config ./config

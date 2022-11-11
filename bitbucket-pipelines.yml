@@ -35,7 +35,7 @@ pipelines:
     master:
       - step:
           name: Build & push app
-          trigger: manual
+          trigger: manual #this errors on purpose so that pipeline doesn't run
           script:
             - docker build -t antalvarenga/poetry-flask .
             - echo DOCKERHUB_USERNAME=${DOCKERHUB_USERNAME}

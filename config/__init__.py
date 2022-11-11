@@ -1,10 +1,10 @@
-# Base configuration and environment variables (secrets)
 import os
 
 from apispec import APISpec
 from apispec.ext.marshmallow import MarshmallowPlugin
 
 
+# Base configuration and environment variables (secrets)
 class Config:
     TESTING = False
     APISPEC_SPEC = APISpec(
@@ -19,19 +19,12 @@ class Config:
 
 
 class LocalConfig(Config):
-    SQLALCHEMY_DATABASE_URI = (
-        "postgresql://flask_app_root:123456@localhost:5432/flask_app"
-    )
+    pass
 
 
 class ProductionConfig(Config):
-    SQLALCHEMY_DATABASE_URI = (
-        "postgresql://flask_app_root:123456@database:5432/flask_app"
-    )
+    pass
 
 
 class TestingConfig(Config):
     TESTING = True
-    SQLALCHEMY_DATABASE_URI = (
-        "postgresql://flask_app_root:123456@localhost:5432/flask_app_test"
-    )

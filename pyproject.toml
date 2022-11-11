@@ -2,7 +2,7 @@
 name = "flask-app"
 version = "0.1.0"
 description = ""
-authors = ["António Alvarenga <aalvarenga@imaginarycloud.com>"]
+authors = ["António Alvarenga <antonioalvarengavd@gmail.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
@@ -22,7 +22,12 @@ pytest = "^7.2.0"
 pytest-cov = "^4.0.0"
 black = "^22.10.0"
 pre-commit = "^2.20.0"
+python-dotenv = "^0.21.0"
+pytest-dotenv = "^0.5.2"
 
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.pytest.ini_options]
+env_files = ["envs/.env.test"]

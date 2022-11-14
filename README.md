@@ -2,7 +2,7 @@
 
 Boilerplate using Python's Flask web framework (https://flask.palletsprojects.com/en/2.2.x/) ready for bigger projects.
 
-### Features
+## Features
 
 - Application factory pattern;
 - Flask Blueprints for different application contexts;
@@ -25,7 +25,7 @@ Boilerplate using Python's Flask web framework (https://flask.palletsprojects.co
 - Bitbucket pipelines CICD.
 
 
-### Install locally
+## Install locally
 
 Run `$ ./scripts/local-bootstrap.sh` to:
 
@@ -39,24 +39,24 @@ Set up the Postgres database with the configuration as in docker-compose.yml (ea
 Run `$ ./scripts/upgrade-db.sh` to run migrations.
 
 
-### Activate environment
+## Activate environment
 
 `$ source .venv/bin/activate`
-### Run local server
+## Run local server
 
 `$ ./scripts/server.sh`
 
-### Run tests
+## Run tests
 
 `$ poetry run pytest {pattern/options}`
 
 Make sure there is a database named flask_app_test in the same db server as the local db
 
-### Run lint
+## Run lint
 
 `$ poetry run pre-commit run --all-files`
 
-### Swagger UI
+## Swagger UI
 
 at /docs
 
@@ -72,3 +72,13 @@ at /docs
 ### SSL configuration
 
 Followed this tutorial: https://mindsers.blog/post/https-using-nginx-certbot-docker/
+
+## License
+
+Copyright © 2010-2022 [Imaginary Cloud](https://www.imaginarycloud.com/?utm_source=github). This library is licensed under the MIT license.
+
+## About Imaginary Cloud
+
+[![Imaginary Cloud](https://s3.eu-central-1.amazonaws.com/imaginary-images/Logo_IC_readme.svg)](https://www.imaginarycloud.com/?utm_source=github)
+
+At Imaginary Cloud, we build world-class web & mobile apps. Our Front-end developers and UI/UX designers are ready to create or scale your digital product. Take a look at our [website](https://www.imaginarycloud.com/?utm_source=github) and [get in touch!](https://www.imaginarycloud.com/contacts/?utm_source=github) We'll take it from there.

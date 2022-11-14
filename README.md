@@ -61,7 +61,7 @@ Make sure there is a database named flask_app_test in the same db server as the 
 at /docs
 
 
-### Dockerfiles
+## Dockerfiles
 
 `pipeline.Dockerfile` used to build base image to be used on the pipeline.
 
@@ -69,7 +69,7 @@ at /docs
 
 `Dockerfile` to build the application.
 
-### SSL configuration
+## SSL configuration
 
 Followed this tutorial: https://mindsers.blog/post/https-using-nginx-certbot-docker/
 

@@ -1,10 +1,9 @@
-import uuid
+import sqlalchemy as sa
+from sqlalchemy.orm import Mapped, mapped_column
 
-from sqlalchemy.dialects.postgresql import UUID
-
+from app.models.base import Base
 from app.stores.database import db
 
 
-class User(db.Model):
-    id = db.Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    name = db.Column(db.String)
+class User(Base, db.Model):
+    name: Mapped[str] = mapped_column(sa.String(), nullable=False)

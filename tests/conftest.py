@@ -18,6 +18,14 @@ def app():
         yield app
 
 
+@pytest.fixture(scope="session")
+def app_session():
+    app: Final[Flask] = create_app(env="testing")
+
+    with app.app_context():
+        yield app
+
+
 @pytest.fixture()
 def client(app: Flask):
     with app.test_client() as client:

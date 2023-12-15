@@ -2,7 +2,9 @@ from flask import Response
 from flask.testing import FlaskClient
 from sqlalchemy.orm import scoped_session
 
+from app.models.user import User
 from tests.helpers.asserts import assert_in_response_json, assert_response_code
+from tests.helpers.database import reset
 
 
 # create and get should be in the same test because the object returned on create
@@ -32,4 +34,5 @@ def test_create_and_get_user_success(db_session: scoped_session, client: FlaskCl
     assert_response_code(response2, 200)
     assert_in_response_json(response2, {"name": "Test", "id": user_id})
 
+    reset(db_session, User)
     db_session.close()

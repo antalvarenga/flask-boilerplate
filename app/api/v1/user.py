@@ -3,7 +3,7 @@ from functools import cached_property
 from flask import abort
 from flask_apispec import MethodResource, doc, marshal_with, use_kwargs
 
-from app.admin.v1.schemas.user import PostUserSchema, UserSchema
+from app.api.v1.schemas.user import PostUserSchema, UserSchema
 from app.services.user import UserService
 
 

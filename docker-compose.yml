@@ -26,16 +26,15 @@ services:
       - ./certbot/www/:/var/www/certbot/:rw
       - ./certbot/conf/:/etc/letsencrypt/:rw
   database:
-    image: bitnami/postgresql:13-debian-11
+    image: postgres:16
     restart: unless-stopped
     ports:
       - 5432:5432
     volumes:
       - database_vol:/bitnami/postgresql
     environment:
-      - POSTGRESQL_DATABASE=flask_app
-      - POSTGRESQL_USERNAME=flask_app_root
-      - POSTGRESQL_PASSWORD=123456
-      - POSTGRESQL_POSTGRES_PASSWORD=123456
+      - POSTGRES_USER=flask_app_root
+      - POSTGRES_PASSWORD=123456
+      - POSTGRES_DB=flask_app
 volumes:
   database_vol:

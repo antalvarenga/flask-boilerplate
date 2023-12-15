@@ -13,3 +13,6 @@ poetry install
 
 # Set up git hook scripts
 pre-commit install
+
+# Set up database container
+docker compose up database -d

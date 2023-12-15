@@ -2,11 +2,11 @@ from flask import Flask
 from flask_apispec import FlaskApiSpec
 from werkzeug.middleware.proxy_fix import ProxyFix
 
-from app.admin import v1 as admin_v1
+from app.api import v1 as admin_v1
 from config import database
 
 
-def create_app(config_file: str = None, env="local"):
+def create_app(env="local"):
     app = Flask(__name__)
 
     print(env)

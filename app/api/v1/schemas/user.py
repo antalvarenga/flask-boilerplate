@@ -10,4 +10,4 @@ class UserSchema(SQLAlchemyAutoSchema):
 
 class PostUserSchema(UserSchema):
     class Meta(UserSchema.Meta):
-        exclude = ("id",)
+        exclude = ("id", "created_at", "updated_at")

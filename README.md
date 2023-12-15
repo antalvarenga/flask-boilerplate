@@ -75,7 +75,7 @@ Followed this tutorial: https://mindsers.blog/post/https-using-nginx-certbot-doc
 
 ## License
 
-Copyright © 2010-2022 [Imaginary Cloud](https://www.imaginarycloud.com/?utm_source=github). This library is licensed under the MIT license.
+Copyright © 2010-2023 [Imaginary Cloud](https://www.imaginarycloud.com/?utm_source=github). This library is licensed under the MIT license.
 
 ## About Imaginary Cloud
 

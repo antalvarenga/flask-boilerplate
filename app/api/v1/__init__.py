@@ -4,6 +4,7 @@ from flask import Blueprint, Flask
 from flask_apispec import FlaskApiSpec
 from flask_restful import Api
 
+from app.api.v1.celery import CeleryGetResource, CeleryPostResource
 from app.api.v1.user import UserResource, UsersResource
 from app.types import TBlueprintUrl
 
@@ -16,6 +17,8 @@ def init_app(app: Flask, docs: FlaskApiSpec):
     urls: List[TBlueprintUrl] = [
         {"path": "/users/<int:id>", "resource": UserResource},
         {"path": "/users", "resource": UsersResource},
+        {"path": "/celery-post", "resource": CeleryPostResource},
+        {"path": "/celery-result/<id>", "resource": CeleryGetResource},
     ]
 
     for url in urls:

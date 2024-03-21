@@ -16,6 +16,11 @@ class Config:
     APISPEC_SWAGGER_URL = "/docs-json/"
     APISPEC_SWAGGER_UI_URL = "/docs/"
     SQLALCHEMY_DATABASE_URI = os.environ.get("SQLALCHEMY_DATABASE_URI")
+    CELERY = dict(
+        broker_url=os.environ.get("CELERY_BROKER_URL", "redis://localhost"),
+        result_backend=os.environ.get("CELERY_RESULT_BACKEND", "redis://localhost"),
+        task_ignore_result=True,
+    )
 
 
 class LocalConfig(Config):

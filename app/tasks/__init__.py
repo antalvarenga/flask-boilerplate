@@ -9,5 +9,5 @@ def add(x, y):
     import time
 
     logger.info(f"Adding {x} and {y}")
-    time.sleep(5)
+    time.sleep(100)
     return x + y

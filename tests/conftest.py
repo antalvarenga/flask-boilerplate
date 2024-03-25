@@ -7,7 +7,7 @@ from flask import Flask
 
 from app import create_app
 
-pytest_plugins = ["tests.fixtures"]
+pytest_plugins = ["tests.fixtures", "celery.contrib.pytest"]
 
 
 @pytest.fixture()

@@ -6,7 +6,7 @@ authors = ["António Alvarenga <aalvarenga@imaginarycloud.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.12"
+python = "^3.13"
 flask = "^3.0.0"
 gunicorn = "^21.2.0"
 flask-restful = "^0.3.10"

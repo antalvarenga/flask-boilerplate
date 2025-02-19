@@ -56,11 +56,12 @@ jobs:
       - name: Setup SSH known hosts
         run: |
           mkdir -p ~/.ssh
+
           ssh-keyscan -H ${{secrets.REMOTE_IP}} >> ~/.ssh/known_hosts
 
       - uses: arwynfr/actions-docker-context@v2
         with:
-          docker_host: "ssh://dev@${{secrets.REMOTE_IP}}"
+          docker_host: "ssh://root@${{secrets.REMOTE_IP}}"
           context_name: "remote-server"
           ssh_cert: ${{ secrets.SSH_CERT }}
           ssh_key: ${{ secrets.SSH_KEY }}

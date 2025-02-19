@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "flask-app"
-version = "0.1.0"
+version = "0.1.1"
 description = "Flask boilerplate project"
 authors = ["António Alvarenga <aalvarenga@imaginarycloud.com>"]
 readme = "README.md"
@@ -15,7 +15,7 @@ flask-sqlalchemy = "^3.1.1"
 flask-migrate = "^4.0.5"
 marshmallow-sqlalchemy = "^0.29.0"
 flask-cors = "^4.0.0"
-# psycopg2-binary = "^2.9.4"
+psycopg2-binary = "^2.9.4"
 
 
 [tool.poetry.group.dev.dependencies]

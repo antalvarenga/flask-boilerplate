@@ -1,0 +1,72 @@
+name: Publish to development
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+jobs:
+  test:
+    name: Execute tests
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_USER: flask_app_root
+          POSTGRES_PASSWORD: 123456
+          POSTGRES_DB: flask_app_test
+        ports:
+        - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          ref: development
+
+      - name: Load .env file
+        uses: xom9ikk/dotenv@v2
+        with:
+          path: ./envs/
+          mode: test
+
+      - name: Custom action to setup Python environment and install dependencies
+        uses: ./.github/actions/setup-python
+
+      - name: Run tests
+        run: /home/runner/.local/bin/poetry run pytest
+
+  deploy:
+    runs-on: ubuntu-latest
+    name: "Publish on the remote server"
+    needs: test
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: pwd
+        run: pwd
+
+      - name: Debug env
+        run: export && env
+
+      - name: Setup SSH known hosts
+        run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan -H ${{secrets.REMOTE_IP}} >> ~/.ssh/known_hosts
+
+      - uses: arwynfr/actions-docker-context@v2
+        with:
+          docker_host: "ssh://dev@${{secrets.REMOTE_IP}}"
+          context_name: "remote-server"
+          ssh_cert: ${{ secrets.SSH_CERT }}
+          ssh_key: ${{ secrets.SSH_KEY }}
+          use_context: true
+
+      - run: |
+          docker compose -f docker-compose.yml -p flask-app up --force-recreate --build -d
+          docker image prune -f
+          docker compose -f docker-compose.yml -p flask-app run --rm flask poetry run flask db upgrade

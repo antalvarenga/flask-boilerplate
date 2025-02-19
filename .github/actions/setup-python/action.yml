@@ -1,0 +1,25 @@
+name: Setup Python Environment
+description: Sets up a Python environment and installs dependencies
+inputs:
+  python-version:
+    description: "The Python version to use"
+    required: true
+    default: "3.11.9"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Set up Python 3.11.9
+      uses: actions/setup-python@v3
+      with:
+        python-version: 3.11.9
+
+    - name: Create and activate virtual environment
+      run: |
+        python3 -m venv venv
+        source venv/bin/activate
+      shell: bash
+
+    - name: Install dependencies
+      run: curl -sSL https://install.python-poetry.org | python3 - && /home/runner/.local/bin/poetry install
+      shell: bash

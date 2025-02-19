@@ -1,16 +1,18 @@
-version: "3.9"
-
 services:
   flask:
-    image: antalvarenga/poetry-flask:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
     ports:
-      - 5000
+      - 5010:5010
     environment:
       - SQLALCHEMY_DATABASE_URI=postgresql://flask_app_root:123456@database:5432/flask_app
     depends_on:
       - database
   nginx:
-    image: antalvarenga/nginx:latest
+    build:
+      context: .
+      dockerfile: nginx.Dockerfile
     ports:
       - 80:80
       - 443:443
@@ -20,18 +22,18 @@ services:
     # restart: always
     depends_on:
       - flask
-  certbot:
-    image: certbot/certbot:latest
-    volumes:
-      - ./certbot/www/:/var/www/certbot/:rw
-      - ./certbot/conf/:/etc/letsencrypt/:rw
+  # certbot:
+  #   image: certbot/certbot:latest
+  #   volumes:
+  #     - ./certbot/www/:/var/www/certbot/:rw
+  #     - ./certbot/conf/:/etc/letsencrypt/:rw
   database:
-    image: postgres:16
-    restart: unless-stopped
+    image: postgres:17
+    # restart: unless-stopped
     ports:
       - 5432:5432
     volumes:
-      - database_vol:/bitnami/postgresql
+      - database_vol:/var/lib/postgresql/data
     environment:
       - POSTGRES_USER=flask_app_root
       - POSTGRES_PASSWORD=123456

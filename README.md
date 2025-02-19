@@ -56,6 +56,10 @@ Make sure there is a database named flask_app_test in the same db server as the 
 
 `$ poetry run pre-commit run --all-files`
 
+To update pre-commit repos run `$ poetry run pre-commit autoupdate`
+
+This updates the rev field in .pre-commit-config.yaml to the latest stable versions of the hooks.
+
 ## Swagger UI
 
 at /docs

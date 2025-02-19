@@ -6,7 +6,10 @@ services:
     ports:
       - 5010:5010
     environment:
+      # hide in a real application as env var
       - SQLALCHEMY_DATABASE_URI=postgresql://flask_app_root:123456@database:5432/flask_app
+    networks:
+      - default
     depends_on:
       - database
   nginx:
@@ -20,6 +23,8 @@ services:
       - ./certbot/www:/var/www/certbot/:ro
       - ./certbot/conf/:/etc/nginx/ssl/:ro
     # restart: always
+    networks:
+      - default
     depends_on:
       - flask
   # certbot:
@@ -34,9 +39,14 @@ services:
       - 5432:5432
     volumes:
       - database_vol:/var/lib/postgresql/data
+    networks:
+      - default
     environment:
+      # hide this in a real application as env vars
       - POSTGRES_USER=flask_app_root
       - POSTGRES_PASSWORD=123456
       - POSTGRES_DB=flask_app
 volumes:
   database_vol:
+networks:
+  default:

@@ -4,7 +4,7 @@ services:
       context: .
       dockerfile: Dockerfile
     ports:
-      - 5010:5010
+      - 5010
     environment:
       # hide in a real application as env var
       - SQLALCHEMY_DATABASE_URI=postgresql://flask_app_root:123456@database:5432/flask_app

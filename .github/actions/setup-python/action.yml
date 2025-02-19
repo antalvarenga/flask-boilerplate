@@ -25,5 +25,5 @@ runs:
         POETRY_VERSION: 2.1.0
       run: |
         curl -sSL https://install.python-poetry.org | python3 -
-        /home/runner/.local/bin/poetry install
+        /home/runner/.local/bin/poetry install --no-root
       shell: bash

@@ -11,7 +11,8 @@ services:
     networks:
       - default
     depends_on:
-      - database
+      database:
+        condition: service_healthy
   nginx:
     build:
       context: .
@@ -46,6 +47,11 @@ services:
       - POSTGRES_USER=flask_app_root
       - POSTGRES_PASSWORD=123456
       - POSTGRES_DB=flask_app
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U flask_app_root"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 volumes:
   database_vol:
 networks:

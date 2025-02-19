@@ -1,4 +1,4 @@
-name: Publish to development
+name: Publish to master
 on:
   push:
     branches:
